@@ -1,11 +1,15 @@
 package cohort_65.java.studentservice.сontroller;
 
 import cohort_65.java.studentservice.dto.NewStudentDto;
+import cohort_65.java.studentservice.dto.ScoreDto;
 import cohort_65.java.studentservice.dto.StudentDto;
 import cohort_65.java.studentservice.dto.UpdateStudentDto;
 import cohort_65.java.studentservice.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
 
 @RestController
 public class StudentController {
@@ -31,9 +35,6 @@ public class StudentController {
                                     @PathVariable int id) {
         return studentService.updateStudent(updateStudent, id);
     }
-/* TODO advanced
-    added for model Student field:
-    Map<String, Integer> scores = new HashMap<>();
 
     @PutMapping("/score/student/{id}")
     public Boolean addScore(@PathVariable int id, @RequestBody ScoreDto scoreDto) {
@@ -54,7 +55,7 @@ public class StudentController {
     public List<StudentDto> getStudentsByExamMinScore(@PathVariable String exam, @PathVariable Integer minScore) {
         return studentService.getStudentsByExamMinScore(exam, minScore);
     }
-    */
+
 }
 
 

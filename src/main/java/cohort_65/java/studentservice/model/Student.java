@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,4 +18,6 @@ public class Student {
     private String firstName;
     @Setter
     private String lastName;
+    @Setter
+    private Map<String, Integer> scores = new HashMap<>();
 }
