@@ -38,7 +38,7 @@ public class StudentServiceImpl implements StudentService {
         if (studentRepository.findById(newStudent.getId()).isPresent()) {
             return false;
         }
-        Student student = new Student(newStudent.getId(), newStudent.getFirstName(), newStudent.getLastName());
+        Student student = new Student();
         studentRepository.save(student);
         return true;
     }
@@ -74,7 +74,7 @@ public class StudentServiceImpl implements StudentService {
         if (scoreDto == null || scoreDto.getExam() == null || scoreDto.getExam().trim().isEmpty() || scoreDto.getScore() == null) {
             throw new InvalidStudentRequestException("Fields 'exam' and 'score' are required");
         }
-        Student student = studentRepository.findById(id).orElseThrow(StudentNotFoundException::new);
+        Student student = studentRepository.findById(studentId).orElseThrow(StudentNotFoundException::new);
         student.getScores().put(scoreDto.getExam(), scoreDto.getScore());
         studentRepository.save(student);
         return true;

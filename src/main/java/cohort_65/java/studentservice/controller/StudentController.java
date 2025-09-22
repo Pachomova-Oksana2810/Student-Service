@@ -1,4 +1,4 @@
-package cohort_65.java.studentservice.сontroller;
+package cohort_65.java.studentservice.controller;
 
 import cohort_65.java.studentservice.dto.NewStudentDto;
 import cohort_65.java.studentservice.dto.ScoreDto;
