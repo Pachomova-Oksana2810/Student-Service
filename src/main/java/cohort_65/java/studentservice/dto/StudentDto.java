@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StudentDto {
     Integer id;
-    String name;
+    String firstName;
+    String lastName;
 }

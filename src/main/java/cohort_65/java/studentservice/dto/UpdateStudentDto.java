@@ -10,5 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateStudentDto {
-    String name;
+    String firstName;
+    String lastName;
 }
