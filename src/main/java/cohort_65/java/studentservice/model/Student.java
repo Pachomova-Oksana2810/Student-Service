@@ -6,14 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@Document(collation = "students")
 public class Student {
     private  Integer id;
     @Setter
