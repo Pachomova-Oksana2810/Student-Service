@@ -18,8 +18,8 @@ public class StudentController {
     StudentService studentService;
 
     @PostMapping("/student")
-    public boolean addStudent(@RequestBody NewStudentDto newStudentDto) {
-        return studentService.addStudent(newStudentDto);
+    public boolean addStudent(@RequestBody NewStudentDto newStudent) {
+        return studentService.addStudent(newStudent);
     }
     @GetMapping("/student/{id}")
     public StudentDto findStudent(@PathVariable int id) {

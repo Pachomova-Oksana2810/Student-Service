@@ -38,7 +38,7 @@ public class StudentServiceImpl implements StudentService {
         if (studentRepository.findById(newStudent.getId()).isPresent()) {
             return false;
         }
-        Student student = new Student();
+        Student student = new Student(newStudent.getId(), newStudent.getFirstName(), newStudent.getLastName());
         studentRepository.save(student);
         return true;
     }
@@ -71,62 +71,38 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Boolean addScore(int studentId, ScoreDto scoreDto) {
-        if (scoreDto == null || scoreDto.getExam() == null || scoreDto.getExam().trim().isEmpty() || scoreDto.getScore() == null) {
-            throw new InvalidStudentRequestException("Fields 'exam' and 'score' are required");
-        }
         Student student = studentRepository.findById(studentId).orElseThrow(StudentNotFoundException::new);
-        student.getScores().put(scoreDto.getExam(), scoreDto.getScore());
+        boolean result = student.addScore(scoreDto.getExam(), scoreDto.getScore());
         studentRepository.save(student);
-        return true;
+        return result;
     }
 
     @Override
     public List<StudentDto> findStudentsByName(String name) {
-        String lower = name.toLowerCase();
-        List<StudentDto> result = new ArrayList<>();
-        for (Student s : studentRepository.findAll()) {
-            String full = (s.getFirstName() + " " + s.getLastName()).toLowerCase();
-            if (s.getFirstName().toLowerCase().contains(lower) || s.getLastName().toLowerCase()
-                    .contains(lower) || full.contains(lower)) {
-                result.add(new StudentDto(s.getId(), s.getFirstName(), s.getLastName()));
-            }
+            return studentRepository.findAll()
+                    .stream()
+                    .filter(student -> student.getFirstName().contains(name))
+                    .map(student -> new StudentDto(student.getId(),
+                            student.getFirstName(), student.getLastName()))
+                    .toList();
         }
-        return result;
-    }
 
     @Override
     public Integer getStudentsNamesQuantity(Set<String> names) {
-        if (names == null || names.isEmpty()) {
-            return 0;
-        }
-        Set<String> lowered = new HashSet<>();
-        for (String n : names) {
-            if (n != null) {
-                lowered.add(n.toLowerCase());
-            }
-        }
-        int count = 0;
-        for (Student s : studentRepository.findAll()) {
-            if (lowered.contains(s.getFirstName().toLowerCase()) || lowered.contains(s.getLastName().toLowerCase())) {
-                count++;
-            }
-        }
-        return count;
+        return Math.toIntExact(studentRepository.findAll().stream()
+                .filter(student -> names.contains(student.getFirstName()))
+                .count());
     }
 
     @Override
     public List<StudentDto> getStudentsByExamMinScore(String exam, Integer minScore) {
-        List<StudentDto> result = new ArrayList<>();
-        if (exam == null || exam.trim().isEmpty() || minScore == null) {
-            return result;
-        }
-        for (Student s : studentRepository.findAll()) {
-            Integer score = s.getScores().get(exam);
-            if (score != null && score >= minScore) {
-                result.add(new StudentDto(s.getId(), s.getFirstName(), s.getLastName()));
-            }
-        }
-        return result;
+        return studentRepository.findAll()
+                .stream()
+                .filter(student -> student.getScores().get(exam) != null
+                        && student.getScores().get(exam) >= minScore)
+                .map(student -> new StudentDto(student.getId(),
+                        student.getFirstName(), student.getLastName()))
+                .toList();
     }
 
 }
